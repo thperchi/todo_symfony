@@ -60,6 +60,10 @@ class ListController extends AbstractController
     {
         $list = $lists->findOneBy(['id' => $id]);
         
+        if ($this->getUser() != $list->getUser()) {
+            return $this->redirectToRoute('lists');
+        }
+
         $form = $this->createForm(TodolistType::class, $list);
         
         $form->handleRequest($req);

@@ -64,6 +64,10 @@ class TaskController extends AbstractController
     public function updatetask(int $id, EntityManagerInterface $em, Request $req, TaskRepository $tasks): Response
     {
         $task = $tasks->findOneBy(['id' => $id]);
+
+        if ($this->getUser() != $task->getList()->getUser()) {
+            return $this->redirectToRoute('lists');
+        }
         
         $form = $this->createForm(TaskType::class, $task);
         
