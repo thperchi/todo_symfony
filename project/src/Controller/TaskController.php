@@ -19,6 +19,10 @@ class TaskController extends AbstractController
      */
     public function addtask(int $id, TodolistRepository $lists, Request $req, EntityManagerInterface $em): Response
     {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('lists');
+        }
+
         $list = $lists->findOneBy(['id' => $id]);
     
         $task = new Task();

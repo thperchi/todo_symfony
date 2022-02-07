@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class MainController extends AbstractController
 {
     /**
-     * @Route("/lists", name="lists")
+     * @Route("/", name="lists")
      */
     public function index(TodolistRepository $lists): Response
     {

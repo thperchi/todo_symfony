@@ -18,6 +18,10 @@ class ListController extends AbstractController
      */
     public function addlist(EntityManagerInterface $em, Request $req): Response
     {
+        if (!$this->getUser()) {
+            return $this->redirectToRoute('lists');
+        }
+
         $list = new Todolist();
         $list->setUser($this->getUser());
         
