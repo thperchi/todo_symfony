@@ -1,0 +1,33 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Add a task{% endblock %}
+
+{% block body %}
+  <div class="container py-5 h-100">
+    <div class="card rounded-3">
+      <div class="card-body p-4">
+            <p class="mb-2"><span class="h2 me-2">{{ list.getName() }}</span>{{ list.user.getEmail() }} <a href="{{path('deletelist', {'id': list.getId()})}}"><i class="fa fa-trash" style="color : red" aria-hidden="true"></i></a> <a href="{{path('updatelist', {'id': list.getId()})}}"><i class="fa fa-pencil" style="color : grey" aria-hidden="true"></i></a></p>
+            {% if list.deadline %}
+            <p class="text-muted pb-2">Until {{list.deadline.format('d/m/Y')}}</p>
+            {% endif %}
+            <ul class="list-group rounded-0">
+            {% for t in list.getTasks() %}
+              <li class="list-group-item border-0 d-flex align-items-center ps-0">
+                    <a href="{{path('validatetask', {'id': t.getId()})}}"><i class="fa fa-check-square" style="color : green"></i></a>
+                    {% if t.getDone() == true %}
+                      <strike>{{t.name}}</strike>
+                    {% else %}
+                      {{t.name}}
+                    {% endif %}
+                    <a href="{{path('deletetask', {'id': t.getId()})}}"><i class="fa fa-trash" style="color : red" aria-hidden="true"></i></a>
+                    <a href="{{path('updatetask', {'id': t.getId()})}}"><i class="fa fa-pencil" style="color : grey" aria-hidden="true"></i></a>
+              </li>
+            {% endfor %}
+            </ul>
+      </div>
+    </div>
+  </div>
+{% if app.user == list.getUser() %}
+    {{form(form)}}
+{% endif %}
+{% endblock %}

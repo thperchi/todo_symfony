@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Add new list{% endblock %}
+
+{% block body %}
+{% if app.user %}
+{{ form(form) }}
+{% endif %}
+{% endblock %}

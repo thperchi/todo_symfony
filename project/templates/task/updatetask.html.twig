@@ -1,0 +1,9 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Update task{% endblock %}
+
+{% block body %}
+{% if app.user %}
+{{ form(form) }}
+{% endif %}
+{% endblock %}
