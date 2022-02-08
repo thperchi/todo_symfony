@@ -44,9 +44,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     private $todolists;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=Todolist::class, mappedBy="invited")
+     */
+    private $invited;
+
     public function __construct()
     {
         $this->todolists = new ArrayCollection();
+        $this->invited = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -163,6 +169,33 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
             if ($todolist->getUser() === $this) {
                 $todolist->setUser(null);
             }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|Todolist[]
+     */
+    public function getInvited(): Collection
+    {
+        return $this->invited;
+    }
+
+    public function addInvited(Todolist $invited): self
+    {
+        if (!$this->invited->contains($invited)) {
+            $this->invited[] = $invited;
+            $invited->addInvited($this);
+        }
+
+        return $this;
+    }
+
+    public function removeInvited(Todolist $invited): self
+    {
+        if ($this->invited->removeElement($invited)) {
+            $invited->removeInvited($this);
         }
 
         return $this;

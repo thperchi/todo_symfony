@@ -42,9 +42,15 @@ class Todolist
      */
     private $user;
 
+    /**
+     * @ORM\ManyToMany(targetEntity=User::class, inversedBy="invited")
+     */
+    private $invited;
+
     public function __construct()
     {
         $this->tasks = new ArrayCollection();
+        $this->invited = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -114,6 +120,30 @@ class Todolist
     public function setUser(?User $user): self
     {
         $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection|User[]
+     */
+    public function getInvited(): Collection
+    {
+        return $this->invited;
+    }
+
+    public function addInvited(User $invited): self
+    {
+        if (!$this->invited->contains($invited)) {
+            $this->invited[] = $invited;
+        }
+
+        return $this;
+    }
+
+    public function removeInvited(User $invited): self
+    {
+        $this->invited->removeElement($invited);
 
         return $this;
     }

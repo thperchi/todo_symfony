@@ -34,6 +34,9 @@
               </li>
             {% endfor %}
             <a href="{{path('userlists', {'id': l.getUser().getId()})}}">{{ l.getUser().getEmail() }}</a>
+            {% for i in l.getInvited() %}
+                {{ i.getEmail() }}
+            {% endfor %}
             </ul>
             {% if app.user == l.getUser() %}
                 <a href="{{path('addtask', {'id': l.getId()})}}" class="btn btn-secondary btn-sm active">Add a task</a>
