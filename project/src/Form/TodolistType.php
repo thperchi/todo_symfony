@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Todolist;
 use App\Entity\User;
+use App\Repository\UserRepository;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
@@ -22,6 +23,9 @@ class TodolistType extends AbstractType
                 'choice_label' => 'email',
                 'multiple' => true,
                 'expanded' => true,
+                'query_builder' => function (UserRepository $ur) {
+                    return $ur->findAllExeptLogged();
+                },
             ])
             ->add('save', SubmitType::class, ['label' => 'Create List'])
         ;
