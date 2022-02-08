@@ -25,6 +25,11 @@ class TaskController extends AbstractController
 
         $list = $lists->findOneBy(['id' => $id]);
     
+        $isInvited = false;
+        foreach ($list->getInvited() as $i) {
+            if ($i == $this->getUser()) $isInvited = true;
+        }
+
         $task = new Task();
         $task->setList($lists->findOneBy(['id' => $id]));
         $task->setDone(false);
@@ -33,7 +38,7 @@ class TaskController extends AbstractController
     
         $form->handleRequest($req);
     
-        if($form->isSubmitted() && $form->isValid()) {
+        if($form->isSubmitted() && $form->isValid() && ($this->getUser() == $list->getUser() || $isInvited == true)) {
             $em->persist($task);
             $em->flush();
         }
@@ -65,7 +70,13 @@ class TaskController extends AbstractController
     {
         $task = $tasks->findOneBy(['id' => $id]);
 
-        if ($this->getUser() != $task->getList()->getUser()) {
+        $isInvited = false;
+        foreach ($task->getList()->getInvited() as $i) {
+            if ($i == $this->getUser()) $isInvited = true;
+        }
+
+        if ($this->getUser() == $task->getList()->getUser()) $isInvited = true;
+        if ($this->getUser() != $task->getList()->getUser() && $isInvited == false) {
             return $this->redirectToRoute('lists');
         }
         
@@ -90,7 +101,12 @@ class TaskController extends AbstractController
     public function validatetask(int $id, EntityManagerInterface $em, TaskRepository $tasks): Response
     {
         $task = $tasks->findOneBy(['id' => $id]);
-        if($this->getUser() == $task->getList()->getUser() && $this->getUser() == $task->getList()->getUser()) {
+
+        $isInvited = false;
+        foreach ($task->getList()->getInvited() as $i) {
+            if ($i == $this->getUser()) $isInvited = true;
+        }
+        if($this->getUser() == $task->getList()->getUser() || $isInvited == true) {
             if ($task->getDone() == false) $task->setDone(true);
             else $task->setDone(false);
             $em->flush();

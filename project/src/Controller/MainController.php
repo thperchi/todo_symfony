@@ -16,7 +16,7 @@ class MainController extends AbstractController
     public function index(TodolistRepository $lists): Response
     {
         return $this->render('main/index.html.twig', [
-            'lists' => $lists->findAll()
+            'lists' => $lists->findAll(),
         ]);
     }
 

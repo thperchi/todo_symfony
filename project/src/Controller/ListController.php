@@ -26,7 +26,7 @@ class ListController extends AbstractController
         $list->setUser($this->getUser());
         
         $form = $this->createForm(TodolistType::class, $list);
-        
+
         $form->handleRequest($req);
         
         if($form->isSubmitted() && $form->isValid()) {
@@ -45,6 +45,7 @@ class ListController extends AbstractController
     public function deletelist(int $id, EntityManagerInterface $em, TodolistRepository $lists): Response
     {
         $list = $lists->findOneBy(['id' => $id]);
+
         if($this->getUser() == $list->getUser()) {
             $em->remove($list);
             $em->flush();
