@@ -84,7 +84,7 @@ class TaskController extends AbstractController
         
         $form->handleRequest($req);
         
-        if($form->isSubmitted() && $form->isValid() && $this->getUser() == $task->getList()->getUser()) {
+        if($form->isSubmitted() && $form->isValid() && ($this->getUser() == $task->getList()->getUser() || $isInvited == true)) {
             $em->persist($task);
             $em->flush();
             return $this->redirect($this->generateUrl('lists'));
