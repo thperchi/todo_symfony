@@ -20,7 +20,7 @@
             {% for t in l.getTasks() %}
               <li class="list-group-item border-0 d-flex align-items-center ps-0">
                     {% if app.user == l.getUser() or app.user in l.getInvited %}
-                        <a href="{{path('validatetask', {'id': t.getId()})}}"><i class="fa fa-check-square" style="color : green"></i></a>
+                        <a href="{{path('validatetask', {'id': t.getId()})}}"><i class="fa fa-check-square fa-fw" style="color : green"></i></a>
                     {% endif %}
                     {% if t.getDone() == true %}
                       <strike>{{t.name}}</strike>
@@ -28,16 +28,19 @@
                       {{t.name}}
                     {% endif %}
                     {% if app.user == l.getUser() %}
-                        <a href="{{path('deletetask', {'id': t.getId()})}}"><i class="fa fa-trash" style="color : red" aria-hidden="true"></i></a>
-                        <a href="{{path('updatetask', {'id': t.getId()})}}"><i class="fa fa-pencil" style="color : grey" aria-hidden="true"></i></a>
+                        <a href="{{path('deletetask', {'id': t.getId()})}}"><i class="fa fa-trash fa-fw" style="color : red" aria-hidden="true"></i></a>
+                        <a href="{{path('updatetask', {'id': t.getId()})}}"><i class="fa fa-pencil fa-fw" style="color : grey" aria-hidden="true"></i></a>
                     {% elseif app.user in l.getInvited() %}
-                        <a href="{{path('updatetask', {'id': t.getId()})}}"><i class="fa fa-pencil" style="color : grey" aria-hidden="true"></i></a>
+                        <a href="{{path('updatetask', {'id': t.getId()})}}"><i class="fa fa-pencil fa-fw" style="color : grey" aria-hidden="true"></i></a>
                     {% endif %}
               </li>
             {% endfor %}
-            <a href="{{path('userlists', {'id': l.getUser().getId()})}}">{{ l.getUser().getEmail() }}</a>
+            <a href="{{path('userlists', {'id': l.getUser().getId()})}}">{{ l.getUser().getEmail() }}</a><br/>
+            {% if l.getInvited() is not empty %}
+                Invited users :<br/>
+            {% endif %}
             {% for i in l.getInvited() %}
-                {{ i.getEmail() }}
+                <a href="{{path('userlists', {'id': i.getId()})}}">{{ i.getEmail() }}</a>
             {% endfor %}
             </ul>
             {% if app.user == l.getUser() or app.user in l.getInvited %}
